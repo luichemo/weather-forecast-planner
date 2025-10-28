@@ -1,0 +1,24 @@
+  <mat-card *ngIf="selectedDay" class="hourly-card">
+  <mat-card-header>
+    <mat-card-title>Hourly Forecast - {{ getDayName(selectedDay.date) }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="hourly-scroll">
+      <div class="hourly-item" *ngFor="let hour of getHourlyData()">
+        <div class="time">{{ getTime(hour.dt) }}</div>
+        <app-weather-icon [icon]="hour.weather[0].icon" size="small"></app-weather-icon>
+        <div class="temp">{{ hour.main.temp | temperature }}</div>
+        <div class="details">
+          <div class="detail">
+            <mat-icon>water_drop</mat-icon>
+            <span>{{ hour.pop * 100 | number:'1.0-0' }}%</span>
+          </div>
+          <div class="detail">
+            <mat-icon>air</mat-icon>
+            <span>{{ hour.wind.speed | number:'1.0-0' }} m/s</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

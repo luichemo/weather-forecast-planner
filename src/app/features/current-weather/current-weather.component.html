@@ -1,0 +1,42 @@
+<mat-card *ngIf="weather" class="weather-card">
+  <mat-card-header>
+    <mat-card-title>{{ weather.name }}, {{ weather.sys.country }}</mat-card-title>
+    <mat-card-subtitle>{{ weather.weather[0].description }}</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <div class="weather-main">
+      <app-weather-icon [icon]="weather.weather[0].icon" size="large"></app-weather-icon>
+      <div class="temperature">
+        <span class="temp-value">{{ weather.main.temp | temperature }}</span>
+        <span class="feels-like">Feels like {{ weather.main.feels_like | temperature }}</span>
+      </div>
+    </div>
+    
+    <div class="weather-details">
+      <div class="detail-item">
+        <mat-icon>thermostat</mat-icon>
+        <span class="label">Min/Max</span>
+        <span class="value">{{ weather.main.temp_min | temperature }} / {{ weather.main.temp_max | temperature }}</span>
+      </div>
+      
+      <div class="detail-item">
+        <mat-icon>water_drop</mat-icon>
+        <span class="label">Humidity</span>
+        <span class="value">{{ weather.main.humidity }}%</span>
+      </div>
+      
+      <div class="detail-item">
+        <mat-icon>air</mat-icon>
+        <span class="label">Wind Speed</span>
+        <span class="value">{{ weather.wind.speed }} m/s</span>
+      </div>
+      
+      <div class="detail-item">
+        <mat-icon>compress</mat-icon>
+        <span class="label">Pressure</span>
+        <span class="value">{{ weather.main.pressure }} hPa</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
