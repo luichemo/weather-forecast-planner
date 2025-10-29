@@ -1,0 +1,20 @@
+<div class="compact-forecast-container">
+  <div class="compact-forecast-scroll">
+    <div 
+      *ngFor="let forecast of forecasts" 
+      class="compact-forecast-card"
+      [class.selected]="isSelected(forecast)"
+      (click)="onDayClick(forecast)"
+    >
+      <div class="compact-day">{{ getDayName(forecast.date) }}</div>
+      <app-weather-icon 
+        [icon]="forecast.weather.icon" 
+        size="small"
+      ></app-weather-icon>
+      <div class="compact-temp">
+        <span class="temp-max">{{ forecast.temp_max | temperature }}</span>
+        <span class="temp-min">{{ forecast.temp_min | temperature }}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -15,6 +15,7 @@ import { ForecastListComponent } from './features/forecast-list/forecast-list.co
 import { ForecastChartComponent } from './features/forecast-chart/forecast-chart.component';
 import { HourlyForecastComponent } from './features/hourly-forecast/hourly-forecast.component';
 import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
+import { ForecastCompactComponent } from './features/forecast-compact/forecast-compact';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,7 @@ import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loa
     SearchComponent,
     CurrentWeatherComponent,
     ForecastListComponent,
+    ForecastCompactComponent,
     ForecastChartComponent,
     HourlyForecastComponent,
     LoadingSpinnerComponent
@@ -36,6 +38,8 @@ import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loa
   styleUrls: ['./app.css']
 })
 export class App implements OnInit {
+  @ViewChild('hourlySection') hourlySection!: ElementRef;
+
   currentWeather: CurrentWeather | null = null;
   dailyForecasts: DailyForecast[] = [];
   selectedDay: DailyForecast | null = null;
@@ -48,7 +52,7 @@ export class App implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.searchCity('Tbilisi');
+    this.searchCity('London');
   }
 
   searchCity(city: string): void {
@@ -56,7 +60,6 @@ export class App implements OnInit {
     this.hasError = false;
     this.selectedDay = null;
 
-    // Get current weather
     this.weatherService.getCurrentWeather(city).subscribe({
       next: (weather) => {
         this.currentWeather = weather;
@@ -67,7 +70,6 @@ export class App implements OnInit {
       }
     });
 
-    // Get forecast
     this.weatherService.getDailyForecast(city).subscribe({
       next: (forecasts) => {
         this.dailyForecasts = forecasts;
@@ -83,6 +85,17 @@ export class App implements OnInit {
 
   onDaySelected(day: DailyForecast): void {
     this.selectedDay = day;
+    
+    // Scroll to hourly forecast section with smooth animation
+    setTimeout(() => {
+      if (this.hourlySection) {
+        this.hourlySection.nativeElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start',
+          inline: 'nearest'
+        });
+      }
+    }, 100);
   }
 
   private showSuccess(message: string): void {

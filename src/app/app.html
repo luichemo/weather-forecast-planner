@@ -2,10 +2,17 @@
 
 <div class="app-container">
   <app-search (searchCity)="searchCity($event)"></app-search>
-
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <div *ngIf="!isLoading && !hasError">
+    
+    <app-forecast-compact 
+      *ngIf="dailyForecasts.length > 0"
+      [forecasts]="dailyForecasts"
+      [selectedDay]="selectedDay"
+      (selectDay)="onDaySelected($event)">
+    </app-forecast-compact>
+    
     <app-current-weather [weather]="currentWeather"></app-current-weather>
     
     <app-forecast-chart 
@@ -18,10 +25,12 @@
       (selectDay)="onDaySelected($event)">
     </app-forecast-list>
     
-    <app-hourly-forecast 
-      *ngIf="selectedDay"
-      [selectedDay]="selectedDay">
-    </app-hourly-forecast>
+    <div #hourlySection>
+      <app-hourly-forecast 
+        *ngIf="selectedDay"
+        [selectedDay]="selectedDay">
+      </app-hourly-forecast>
+    </div>
   </div>
 
   <div *ngIf="hasError && !isLoading" class="error-message">
